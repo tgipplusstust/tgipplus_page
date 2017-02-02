@@ -1,291 +1,139 @@
-<html>
-	<title>!!@@!</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-</head>
-<body onLoad="checkDevice()">
-<h1>This is next page!!</h1><br><br><hr>
-<p id="p1">location</p>
-<p id="p2">identity</p>
-<h3>超連結按鈕</h3>
-<input type="button" value="goRegister" onClick="goRegister()"/>
-<input type="button" value="getlocation" onClick="getLocation()"/>
-<input type="button" value="setidentity" onClick="setIdentity()"/>
-<input type="button" value="getidentity" onClick="getIdentity()"/>
-<input type="button" value="clearIdentity" onClick="clearIdentity()"/>
-<input type="button" value="devicetoken" onClick="getDeviceToken()"/>
-<input type="button" value="aaa" onClick="aaa()"/>
-<script> 
-//default Parm  document.URL   goRegister getLocation setIdentity getIdentity clearIdentity getDeviceToken cb_getLocation cb_setIdentity cb_getIdentity cb_clearIdentity cb_getDeviceToken
-var setID="99454";
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>TGIP+ 數位遊戲海外實習</title>
+<style>
+#main{
+	position:absoulute;
+	margin:0px;
+	padding:0px;
 
-//get from phone
-var id ="";
-var geolatitude="";
-var geolongitude="";
-var time="";
-var deviceToken="";
-var idIsSet = false;
-
-var device ="unknow";
-    
- function aaa()
-{   
-    	document.getElementById("p1").innerHTML="4172572";
-}
-    
-    
-function checkDevice()
-{
-	var str = document.URL;
-	var isAndroid = str.includes("m_android");
-	var isiOs= str.includes("m_ios");
-	if(isAndroid)
-	{
-		device ="android";
-	}
-	if(isiOs)
-	{
-		device ="iOS";
-	}
-	document.getElementById("p2").innerHTML=device;
-}
-
-function setIdentity()
-{
-	switch(device)
-	{
-		case "android":
-				window.AndroidFunction.setId(setID);
-			break;
-		case "iOS":
-				window.location = "eyesoda://setIdentity?"+setID;
-			break;
-		default:
-			break;
-	}
-}
-function cb_setIdentity(cb_setSuccess)
-{
-	document.getElementById("p1").innerHTML=cb_setSuccess;
-	//true  = set success
-	//false = already have id
-}
-function clearIdentity()
-{
-	switch(device)
-	{
-		case "android":
-				window.AndroidFunction.clearId();
-			break;
-		case "iOS":
-				window.location = "eyesoda://clearIdentity?";
-			break;
-		default:
-			break;
-	}
-}
-function cb_clearIdentity(cb_clearSuccess)
-{
-	document.getElementById("p1").innerHTML=cb_clearSuccess;
-	//true  = clear success
-	//false = already clear
-}
-
-function getIdentity()
-{
-	switch(device)
-	{
-		case "android":
-				window.AndroidFunction.getId();
-			break;
-		case "iOS":
-				 window.location = 'eyesoda://getIdentity?'
-			break;
-		default:
-			break;
-	}
-}
-
-function cb_getIdentity(cb_identity)
-{
-	id = cb_identity;
-		document.getElementById("p1").innerHTML=id;
-}
-
-
-function getLocation()
-{
-	switch(device)
-	{
-		case "android":
-				window.AndroidFunction.getLocation();
-			break;
-		case "iOS":
-				window.location = 'eyesoda://getLocation'  
-			break;
-		default:
-			break;
-	}
-}
-function cb_getLocation(cb_geolatitude,cb_geolongitude,cb_time)
-{
-	geolatitude=cb_geolatitude;
-	geolongitude=cb_geolongitude;
-	time=cb_time;
-	document.getElementById("p1").innerHTML=geolatitude+geolongitude+time;
-}
-function getDeviceToken()
-{
-	switch(device)
-	{
-		case "android":
-				window.AndroidFunction.getDeviceToken();
-			break;
-		case "iOS":
-				window.location = 'eyesoda://getDeviceToken?'
-			break;
-		default:
-			break;
-	}
-}
-function cb_getDeviceToken(cb_deviceToken)
-{
-	deviceToken = cb_deviceToken;
-	document.getElementById("p1").innerHTML=deviceToken;
-}
-function goRegister()
-{switch(device)
-	{
-		case "android":
-				window.AndroidFunction.goRegister();
-			break;
-		case "iOS":
-				window.location = "eyesoda://goRegister?";
-			break;
-		default:
-			break;
-	}
-}
-
-
-
-
-
-
-
-/*
-
-
-
-
-
-//clearId
-
-
-
-
-
-
-//javascript call Android
-function android_setIdentity()
-{
-	window.AndroidFunction.setId("5555");
-}
-function android_getIdentity()
-{
-	window.AndroidFunction.getId();
-}
-function android_getLocation()
-{
-	window.AndroidFunction.getLocation();
-}
-function android_getDeviceToken()
-{
-	window.AndroidFunction.getDeviceToken();
-}
-function android_goRegister()
-{
-	window.AndroidFunction.goRegister();
-}
-//android call javascript
-function callback_android_getId(cb_identity)
-{
-	document.getElementById("p1").innerHTML=cb_identity;
-}
-
-function callback_android_updateLocation(cb_geolatitude,cb_geolongitude,cb_time)
-{
-	geolatitude=cb_geolatitude;
-	geolongitude=cb_geolongitude;
-	time=cb_time;
-		document.getElementById("p1").innerHTML="location:"+geolatitude +", "+geolongitude+", "+time;
-}
-function callback_android_IdSetSuccess(cb_isSuccess)
-{ document.getElementById("p1").innerHTML=cb_isSuccess;
-}
-function callback_android_idAlreadySet(cb_Set)
-{
-	if(cb_Set!="")
-	{
-		document.getElementById("p2").innerHTML="alreadySet";
-	}
-}
-function callback_android_getDeviceToken(cb_deviceToken)
-{
-		document.getElementById("p1").innerHTML=cb_deviceToken;
-}
-
-
-
-//javascript call swift function
-function getLocation() { //get gps
-    window.location = 'eyesoda://getLocation'   
-} 
-function setIdentity() {//set id
-
-    window.location = 'eyesoda://setIdentity?99546456450'
-} 
-function getIdentity() {//get id
-
-    window.location = 'eyesoda://getIdentity?'
-} 
-
-// swift call javascript function
-
-function updateLocation(cb_geolatitude,cb_geolongitude,cb_time) //update gps and time time = day,hour,min,sec
-{
-	document.getElementById("p1").innerHTML="location:"+cb_geolatitude +", "+cb_geolongitude+", "+cb_time;
 	
 }
-function idSetSuccess() { //if id set success
-document.getElementById("p2").innerHTML="identity:ios id Set Success";
-   
-} 
-function idAlreadySet() { //if ios already have id
-document.getElementById("p2").innerHTML="identity:ios id Already Set";
-   
-} 
-function getDeviceToken()
-{
-	 window.location = 'eyesoda://getDeviceToken?'
+#bg_{
+	
+ 	position:relative;
+	margin:0px;
+	padding:0px;
+
+}
+#bg_ img{
+	
+ width:100%;
+height:100%;
+}
+#Logo{
+ position:absolute;
+	margin:0px;
+	padding:0px;
+	top:0px;
+}
+
+#Logo img{
+		
+ width:99%;
+	height:100%;
+}
+
+#btn1{
+ position:absolute;
+	margin:0px;
+	padding:0px;
+	top:160px;
+}
+#btn2{
+ position:absolute;
+	margin:0px;
+	padding:0px;
+	top:340px;
+}
+#btn3{
+ position:absolute;
+	margin:0px;
+	padding:0px;
+	top:500px;
+}
+#btn4{
+ position:absolute;
+	margin:0px;
+	padding:0px;
+	top:660px;
+}
+#fb{
+ position:absolute;
+	margin:0px;
+	padding:0px;
+	top:280px;
+	right:0px;
 	
 }
-function registerDevicetoken(cb_deviceToken) { //if ios already have id
-document.getElementById("p2").innerHTML=cb_deviceToken;
-   
-} 
-function getIdFromiOS(cb_identity) //get id
+#fb img
 {
-	if(identity==""||identity=="empty")
-	{
-		document.getElementById("p2").innerHTML="identity:ios not have identity";
-	}else
-	{
-		document.getElementById("p2").innerHTML="identity:"+cb_identity;
+	width:400px;
+	
 	}
-}
-*/
-</script>
+	
+	#activity{
+ position:absolute;
+	margin:0px;
+	padding:0px;
+top:500px;
+left:750px;
+	
+}#activity img
+{
+	width:700px;
+	
+	}
+body{margin:0px;padding:0px;}
+</style>
+ <script>
+  function myFunction()
+  {
+	  window.location = 'https://www.facebook.com/gameintership/';
+  // alert("Hello World!");
+  }
+  </script>
+<body>
+<div id="main">
+
+	<div id="bg_">
+		<img src="htmluse_images/index_bg.jpg"  border="0"/>
+    </div>
+
+	<div  id = "Logo"  >
+    	 <img src="htmluse_images/logo.gif"/> 
+    </div >
+    <div  id = "btn1"  >
+    	 <img src="htmluse_images/btn1_nor.png"> 
+    </div >
+    <div  id = "btn2"  >
+    	 <img src="htmluse_images/btn2_nor.png"> 
+    </div >
+    <div  id = "btn3"  >
+    	 <img src="htmluse_images/btn3_nor.png"> 
+    </div >
+    <div  id = "btn4"  >
+    	 <img src="htmluse_images/btn4_nor.png"> 
+    </div >
+    
+     <div  id = "fb" onclick="myFunction()" >
+    	 <img src="htmluse_images/FB.png" onclick=""> 
+    </div >
+    
+       <div  id = "activity"  >
+    	 <img src="image/16298811_793334324153382_6720706815768614365_n.jpg"> 
+    </div >
+    
+</div>
+
+
+
+
+
+
+
+
 </body>
 </html>
